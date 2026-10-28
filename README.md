@@ -1,9 +1,6 @@
 # Mental Health Signal — Student Wellness Prediction
 
 A machine-learning application that estimates a student mental-health score from self-reported lifestyle, academic, stress, and social-media usage features. It combines exploratory data analysis, a trained scikit-learn regression model, a FastAPI prediction endpoint, and a browser-based interface.
-
-> **Disclaimer:** This is an educational project, not a clinical assessment or diagnosis. Predictions may be inaccurate and must not be used for medical decisions.
-
 ## Features
 
 - Exploratory data analysis of student social-media and lifestyle data.
@@ -149,7 +146,3 @@ The interface uses plain HTML, CSS, and JavaScript. Open `index.html` for the st
 - The data may not represent all student populations; model performance may differ across groups.
 - Validate the pipeline on independent data before any consequential use.
 - Treat mental-health-related data as sensitive and avoid collecting unnecessary personal information.
-
-## License
-
-No license is specified in this repository. Do not assume that code or data is free of copyright restrictions merely because it is publicly accessible. Confirm that you have appropriate rights to use and redistribute the code and dataset before publishing or reusing them.
