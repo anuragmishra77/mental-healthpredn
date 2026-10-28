@@ -4,7 +4,6 @@ import pandas as pd
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
-from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from typing import Literal
 
@@ -53,6 +52,16 @@ def frontend():
     return FileResponse(BASE_DIR / "index.html")
 
 
+@app.get("/style.css", include_in_schema=False)
+def stylesheet():
+    return FileResponse(BASE_DIR / "style.css", media_type="text/css")
+
+
+@app.get("/script.js", include_in_schema=False)
+def javascript():
+    return FileResponse(BASE_DIR / "script.js", media_type="application/javascript")
+
+
 @app.get("/health")
 def health():
     return {"status": "ok", "message": "Mental Health Prediction API is running"}
@@ -80,8 +89,3 @@ def predict(data: StudentData):
 
     prediction = model.predict(input_row)[0]
     return PredictionResponse(predicted_mental_health_score=float(prediction))
-
-
-# Serve the HTML/CSS/JS from this same service so the UI and API share one URL.
-# Keep this mount after API routes so /health and /predict are handled by FastAPI.
-app.mount("/", StaticFiles(directory=str(BASE_DIR)), name="static")
