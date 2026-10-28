@@ -1,82 +1,81 @@
 # Mental Health Signal — Student Wellness Prediction
 
-A machine-learning project that estimates a **student mental-health score** from self-reported lifestyle, academic, stress, and social-media usage features. It includes an exploratory data analysis notebook, a trained scikit-learn regression model, a FastAPI prediction endpoint, and a browser-based form.
+A machine-learning application that estimates a student mental-health score from self-reported lifestyle, academic, stress, and social-media usage features. It combines exploratory data analysis, a trained scikit-learn regression model, a FastAPI prediction endpoint, and a browser-based interface.
 
-> **Important:** This is an educational/demo project, not a clinical assessment or diagnosis. Predictions may be inaccurate and should not be used to make medical decisions. If you are concerned about your mental health, consult a qualified professional.
+> **Disclaimer:** This is an educational project, not a clinical assessment or diagnosis. Predictions may be inaccurate and must not be used for medical decisions.
 
 ## Features
 
-- Explore student social-media and lifestyle data in a Jupyter notebook.
-- Inspect distributions, correlations, stress levels, screen time, sleep, and platform usage.
-- Train and compare regression models for the numerical `Mental_Health_Score` target.
-- Preprocess numerical and categorical inputs with a scikit-learn `ColumnTransformer` pipeline.
-- Serve predictions through a FastAPI `/predict` endpoint.
-- Use the HTML/CSS/JavaScript frontend to submit student-profile inputs and view the estimated score.
+- Exploratory data analysis of student social-media and lifestyle data.
+- Regression model experiments targeting the numerical `Mental_Health_Score`.
+- Preprocessing with a scikit-learn `ColumnTransformer` pipeline.
+- FastAPI endpoint for validating input and returning predicted scores.
+- HTML, CSS, and JavaScript frontend for submitting inputs and displaying the result.
 
 ## Project structure
 
 ```text
 mental-healthpredn/
-├── ML_project .ipynb                         # EDA, preprocessing, model experiments
+├── ML_project .ipynb
 ├── Student Social Media And Mental Health Impact.csv
-├── Mental_Health_Model.pkl                   # Serialized scikit-learn pipeline
-├── main.py                                    # FastAPI application and input validation
-├── requirements.txt                           # Python dependencies
-├── index.html                                 # Frontend form
-├── style.css                                  # Frontend styles
-└── script.js                                  # Form validation and API requests
+├── Mental_Health_Model.pkl
+├── main.py
+├── requirements.txt
+├── index.html
+├── style.css
+└── script.js
 ```
 
-Local development folders such as `venv/` and `__pycache__/` are not required to run the project and should generally not be committed.
+Keep local environment folders such as `venv/` and generated files such as `__pycache__/` out of version control.
 
 ## Dataset
 
-The included CSV contains **5,000 rows** and these 13 columns:
+The included CSV has **5,000 rows** and 13 columns:
 
 - **Profile:** `Age`, `Gender`, `Country`, `Academic_Level`
 - **Digital habits:** `Most_Used_Platform`, `Purpose_Of_Use`, `Avg_Daily_Usage_Hours`, `Daily_Unlocks`
 - **Lifestyle and stress:** `Study_Hours`, `Physical_Activity_Hours`, `Sleep_Hours_Per_Night`, `Stress_Level`
 - **Target:** `Mental_Health_Score`
 
-The notebook explores the data, checks missing values and duplicates, examines outliers and relationships, groups less common countries, and builds preprocessing/model pipelines. Verify the dataset's source and terms before redistributing it.
+The notebook explores distributions and relationships, checks data quality, considers outliers, groups less common countries, and builds preprocessing and regression pipelines.
 
 ## Machine-learning approach
 
-The notebook compares Linear Regression with a Random Forest Regressor. The preprocessing pipeline includes:
+The notebook compares Linear Regression and a Random Forest Regressor. The preprocessing pipeline uses:
 
 - Log transformation and standardization for `Study_Hours`
-- Standardization for other numeric features
-- Ordinal encoding for the ordered `Stress_Level` categories
+- Standardization for other numerical features
+- Ordinal encoding for `Stress_Level`
 - One-hot encoding for nominal categorical features
 
-A 70/30 train-test split is used with `random_state=42`. The notebook reports the following results for the default Random Forest model on its test split:
+The notebook uses a 70/30 train-test split with `random_state=42`. Reported results for the default Random Forest model:
 
-| Metric | Result |
+| Metric | Test result |
 |---|---:|
 | R² | 0.8776 |
 | Mean Absolute Error (MAE) | 0.3472 |
 | Root Mean Squared Error (RMSE) | 0.4637 |
 
-These are results from the notebook's particular split, not a guarantee of real-world accuracy. The default Random Forest's training R² is about 0.9808, notably higher than its test R²; this gap may indicate overfitting. The tuned model in the notebook has a test R² of about 0.8650, so tuning did not improve the reported test result. Evaluate on fresh data and review possible data leakage, representativeness, and fairness before drawing conclusions.
+These metrics reflect one dataset split and do not guarantee real-world performance. The training R² (about 0.9808) is notably higher than the test R² and may indicate overfitting. The tuned model's reported test R² is about 0.8650. Evaluation on independent data is needed before drawing broader conclusions.
 
 ## Requirements
 
-- Python 3.10+ recommended
+- Python 3.10 or later recommended
 - pip
-- The serialized model file `Mental_Health_Model.pkl`
+- The model file `Mental_Health_Model.pkl`
 
-Dependencies are listed in `requirements.txt` (including FastAPI, Uvicorn, Pydantic, pandas, joblib, and scikit-learn).
+Dependencies are listed in `requirements.txt`, including FastAPI, Uvicorn, Pydantic, pandas, joblib, and scikit-learn.
 
 ## Run locally
 
-1. Clone this repository and enter its directory:
+1. Clone the repository:
 
    ```bash
    git clone https://github.com/anuragmishra77/mental-healthpredn.git
    cd mental-healthpredn
    ```
 
-2. Create and activate a virtual environment:
+2. Create and activate a virtual environment.
 
    **Windows (PowerShell):**
    ```powershell
@@ -90,7 +89,7 @@ Dependencies are listed in `requirements.txt` (including FastAPI, Uvicorn, Pydan
    source .venv/bin/activate
    ```
 
-3. Install dependencies:
+3. Install packages:
 
    ```bash
    python -m pip install -r requirements.txt
@@ -102,13 +101,13 @@ Dependencies are listed in `requirements.txt` (including FastAPI, Uvicorn, Pydan
    uvicorn main:app --reload
    ```
 
-5. Open the interactive API documentation at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs). The root endpoint is [http://127.0.0.1:8000/](http://127.0.0.1:8000/).
+5. Visit [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) for interactive API documentation, or [http://127.0.0.1:8000/](http://127.0.0.1:8000/) for the root endpoint.
 
-The API loads `Mental_Health_Model.pkl` when `main.py` starts. Keep the model file in the project root. Pickle/joblib files can execute code when loaded; only load model files from sources you trust, and use a compatible scikit-learn environment.
+The model file must be in the project root because `main.py` loads it at startup. Only load joblib/pickle model files from trusted sources and use compatible library versions.
 
 ## Prediction API
 
-Send a JSON request to `POST /predict`. The API validates the input and returns a numeric predicted score.
+Send a JSON request to `POST /predict`.
 
 Example request:
 
@@ -129,7 +128,7 @@ Example request:
 }
 ```
 
-Example response shape:
+Example response shape (illustrative only):
 
 ```json
 {
@@ -137,24 +136,20 @@ Example response shape:
 }
 ```
 
-The number above is illustrative, not a prediction for the example input. Accepted category values are defined by the validation model in `main.py`; see `/docs` for the live schema.
+The displayed number is not a prediction for the sample input. Check `/docs` and the input model in `main.py` for accepted fields and categories.
 
 ## Frontend
 
-The frontend is made with plain HTML, CSS, and JavaScript. Open `index.html` for the static interface. The JavaScript currently sends requests to a configured hosted API URL; for local development, update `API_BASE` in `script.js` to `http://127.0.0.1:8000`. To serve the frontend publicly, host the static files on a static hosting service and configure the API's CORS policy for the exact frontend origin rather than allowing every origin in production.
+The interface uses plain HTML, CSS, and JavaScript. Open `index.html` for the static page. In `script.js`, set `API_BASE` to `http://127.0.0.1:8000` to use a locally running API. For deployment, configure CORS to allow only the frontend origins you trust.
 
 ## Limitations and responsible use
 
-- A predicted score is a model estimate based on the supplied dataset, not a mental-health diagnosis.
-- Associations in the dataset do not establish that screen time, sleep, stress, or another feature causes a mental-health outcome.
-- Performance may change for students from different populations or with different habits.
-- The model and preprocessing pipeline should be validated on independent data before any consequential use.
-- Avoid collecting or publishing identifiable personal information. Treat mental-health-related data as sensitive.
-
-## Attribution
-
-This repository is an independent copy/adaptation of the public project [Ujjwal-Pandey21/MentalHealthPredictor](https://github.com/Ujjwal-Pandey21/MentalHealthPredictor). Please review the upstream repository's license and preserve any notices or attribution required by its terms.
+- The output is a model estimate, not a mental-health diagnosis.
+- Associations do not establish that screen time, sleep, stress, or other features cause a mental-health outcome.
+- The data may not represent all student populations; model performance may differ across groups.
+- Validate the pipeline on independent data before any consequential use.
+- Treat mental-health-related data as sensitive and avoid collecting unnecessary personal information.
 
 ## License
 
-No license is specified here. Unless a license is added by the rights holder, do not assume the project is free of copyright restrictions. Check the upstream project's license before reusing or redistributing its code or data.
+No license is specified in this repository. Do not assume that code or data is free of copyright restrictions merely because it is publicly accessible. Confirm that you have appropriate rights to use and redistribute the code and dataset before publishing or reusing them.
